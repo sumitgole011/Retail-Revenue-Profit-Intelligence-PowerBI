@@ -1,31 +1,25 @@
-# Build and validate the matching Power BI dashboard — Sumit Gole
+# Build and validate the Power BI dashboard — Sumit Gole
 
-## 1. Prepare reproducible data
-Run `python generate_dataset.py` in this repository. Confirm `sumit_retail_sales.csv` has **1,200 records and 13 columns**. Data is synthetic, not a real company's sales.
+## 1. Generate and verify data
+Run `python generate_dataset.py`, then `python validate_dataset.py`. Confirm 1,200 rows, the required 13 fields, unique order IDs, and no arithmetic inconsistencies. **Use the totals printed by the validator as the source of truth**, not the values in the static PDF.
 
 ## 2. Import and model
-In Power BI Desktop: **Get Data > Text/CSV** > `sumit_retail_sales.csv`. Name the table `RetailSales`. Set `OrderDate` to Date, `Quantity` to Whole Number, and `UnitPrice`, `DiscountRate`, `NetSales`, `Cost`, `Profit` to Decimal Number. Format `DiscountRate` as percentage.
+In Power BI Desktop use **Get Data > Text/CSV** and select `sumit_retail_sales.csv`. Name the table `RetailSales`. Set `OrderDate` to Date, `Quantity` to Whole Number and monetary fields to Decimal Number. Format `DiscountRate` as Percentage.
 
-Create the `Calendar` calculated table from `DAX_measures.txt` using **Modeling > New table**. Mark it as a date table, and relate `Calendar[Date]` (one) to `RetailSales[OrderDate]` (many). Create each measure from the DAX file separately using **New measure**.
+Create the `Calendar` calculated table in `DAX_measures.txt` using **Modeling > New table**. Mark it as a date table and create a one-to-many relationship from `Calendar[Date]` to `RetailSales[OrderDate]`. Create the other DAX definitions one at a time using **New measure**. Sort `Calendar[Month]` by `Calendar[MonthNo]`; sort `YearMonth` chronologically.
 
-## 3. Build report pages matching the PDF
-**Page 1 — Executive Overview:** cards for Total Sales, Total Profit, Units Sold and Profit Margin %; monthly NetSales bar chart; Category sales donut; Region sales horizontal bars; Channel sales donut; Top 5 Products sales bars.
+## 3. Build the planned pages
+**Page 1 — Executive Overview:** cards for Total Sales, Total Profit, Units Sold and Profit Margin %; monthly sales column chart; category sales donut; region sales bar chart; channel sales donut; top products by sales.
 
-**Page 2 — Profitability Deep Dive:** Category profit donut, Category Profit Margin % bar chart, and cards for Total Orders, Distinct Customers, Average Order Value and Total Cost.
+**Page 2 — Profitability Deep Dive:** category profit donut; category profit margin bar chart; cards for Total Orders, Distinct Customers, Average Order Value and Total Cost.
 
-Import `theme.json` from View > Themes > Browse for themes. Add date/region/category slicers if useful. The supplied PDF is a **static conceptual dashboard**, not an interactive PBIX export.
+Import `theme.json` via View > Themes > Browse for themes. Add Year, Region, Category and Channel slicers. Verify cross-filter behavior.
 
-## 4. Verify totals
-With all filters cleared, verify:
-- Total Sales = **15,099,553.95**
-- Total Profit = **3,819,871.35**
-- Units Sold = **4,790**
-- Total Orders = **1,200**
-- Distinct Customers = **360**
-- Profit Margin % = approximately **25.30%**
+## 4. Reconcile numbers
+With all slicers cleared, compare the Power BI cards to `python validate_dataset.py` output. Confirm that `Total Sales` equals the CSV sum of `NetSales`, `Total Profit` equals sum of `Profit`, `Units Sold` equals sum of `Quantity`, `Total Orders` equals unique OrderID count, and `Distinct Customers` equals unique CustomerID count. Profit margin should equal profit divided by sales. **The existing static PDF may display different numbers; do not treat it as a verified export.**
 
 ## 5. Save and export
-Save the new report as `Sumit_Gole_Retail_Intelligence.pbix`, **not** `Sumit_Gole_Retail_Store_Analysis.pbix` (the latter is a separate legacy/reference report). Open the saved file again, refresh data, test slicers and verify totals. Then use File > Export > Export to PDF. Replace the static PDF only after confirming the new export reflects the same visuals and data.
+Save as `Sumit_Gole_Retail_Intelligence.pbix`. Reopen and refresh the saved file, confirm slicers and KPIs, and export a fresh PDF from Power BI Desktop. Replace the static dashboard PDF only after the visuals and values match.
 
 ## Current limitation
-The new matching PBIX has **not** been built or validated in Power BI Desktop. The existing PBIX cannot be considered an implementation of this guide. Do not present it as such.
+`Sumit_Gole_Retail_Store_Analysis.pbix` is a separate legacy/reference report, not the implementation of this guide. The new PBIX has not been built or tested in Power BI Desktop.
