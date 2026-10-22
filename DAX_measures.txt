@@ -1,16 +1,17 @@
-// Sumit Gole — Retail Revenue & Profit Intelligence
-// Import sumit_retail_sales.csv as RetailSales; OrderDate type Date
+// Sumit Gole — proposed DAX for the generated synthetic CSV.
+// Use Modeling > New table for Calendar; New measure for all other definitions.
+// Not verified in the legacy PBIX.
+Calendar = ADDCOLUMNS(CALENDAR(DATE(2024,1,1), DATE(2025,12,31)), "Year", YEAR([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "YearMonth", FORMAT([Date], "YYYY-MM"), "Quarter", "Q" & FORMAT([Date], "Q"))
 Total Sales = SUM(RetailSales[NetSales])
 Total Profit = SUM(RetailSales[Profit])
 Total Cost = SUM(RetailSales[Cost])
 Total Orders = DISTINCTCOUNT(RetailSales[OrderID])
 Units Sold = SUM(RetailSales[Quantity])
-Profit Margin % = DIVIDE([Total Profit], [Total Sales], 0)
-Average Order Value = DIVIDE([Total Sales], [Total Orders], 0)
+Profit Margin % = DIVIDE([Total Profit], [Total Sales])
+Average Order Value = DIVIDE([Total Sales], [Total Orders])
 Distinct Customers = DISTINCTCOUNT(RetailSales[CustomerID])
-Sales per Customer = DIVIDE([Total Sales], [Distinct Customers], 0)
+Sales per Customer = DIVIDE([Total Sales], [Distinct Customers])
 Sales LY = CALCULATE([Total Sales], SAMEPERIODLASTYEAR('Calendar'[Date]))
-Sales YoY % = DIVIDE([Total Sales]-[Sales LY], [Sales LY], 0)
+Sales YoY % = DIVIDE([Total Sales] - [Sales LY], [Sales LY])
 Profit LY = CALCULATE([Total Profit], SAMEPERIODLASTYEAR('Calendar'[Date]))
-Profit YoY % = DIVIDE([Total Profit]-[Profit LY], [Profit LY], 0)
-Calendar = ADDCOLUMNS(CALENDAR(DATE(2024,1,1), DATE(2025,12,31)), "Year", YEAR([Date]), "MonthNo", MONTH([Date]), "Month", FORMAT([Date], "MMM"), "YearMonth", FORMAT([Date], "YYYY-MM"), "Quarter", "Q" & FORMAT([Date], "Q"))
+Profit YoY % = DIVIDE([Total Profit] - [Profit LY], [Profit LY])
