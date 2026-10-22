@@ -1,4 +1,15 @@
 # Retail Revenue & Profit Intelligence
+
+## Recruiter quick view
+
+**Business question:** Which products, channels and regions drive retail revenue and profit, and how do margins change?
+
+**Included artifacts:** Synthetic-data generation script, validation script, proposed DAX measures, Power BI theme, report-design PDF and an earlier PBIX.
+
+**Important limitation:** The PBIX currently in this repository does **not** reproduce the synthetic-data report shown in the PDF. The DAX measures and report interactions still require implementation and validation in Power BI Desktop. Do not treat the PDF as proof of a working interactive PBIX.
+
+**Reproduction path:** Generate the dataset, validate it, then follow `BUILD_GUIDE.md` to create and check the interactive report. Keep the final PBIX and visual reference synchronized before presenting this as a completed dashboard.
+
 ### Power BI portfolio project by Sumit Gole
 
 Explore retail revenue, profitability, product mix, sales channels and regional performance through a **synthetic retail dataset**, reusable DAX measures and a two-page dashboard design.
