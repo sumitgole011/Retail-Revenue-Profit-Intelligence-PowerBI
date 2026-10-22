@@ -1,0 +1,27 @@
+name: Validate synthetic retail dataset
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate reproducible transactions
+        run: python generate_dataset.py
+      - name: Validate schema and arithmetic
+        run: python validate_dataset.py
