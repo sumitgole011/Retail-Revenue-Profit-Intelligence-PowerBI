@@ -1,14 +1,31 @@
-# Power BI build guide — Sumit Gole
+# Build and validate the matching Power BI dashboard — Sumit Gole
 
-1. Import `sumit_retail_sales.csv` in Power BI Desktop using Get Data > Text/CSV (rename the starter CSV accordingly).
-2. Set OrderDate to Date, monetary columns to Decimal Number, and name the loaded table `RetailSales`.
-3. Create the Calendar table from `DAX_measures.txt` and relate Calendar[Date] to RetailSales[OrderDate].
-4. Add measures one at a time and format currency and percentage fields.
-5. Import `theme.json` using View > Themes.
-6. Build Executive Pulse, Product & Margin Lab, and Regional & Customer Lens pages.
-7. Add Year, Region, Category and Channel slicers; test filters.
-8. Save as `Sumit_Gole_Retail_Intelligence.pbix`.
+## 1. Prepare reproducible data
+Run `python generate_dataset.py` in this repository. Confirm `sumit_retail_sales.csv` has **1,200 records and 13 columns**. Data is synthetic, not a real company's sales.
 
-**Status:** A functioning PBIX is not yet included. Synthetic demo data only.
+## 2. Import and model
+In Power BI Desktop: **Get Data > Text/CSV** > `sumit_retail_sales.csv`. Name the table `RetailSales`. Set `OrderDate` to Date, `Quantity` to Whole Number, and `UnitPrice`, `DiscountRate`, `NetSales`, `Cost`, `Profit` to Decimal Number. Format `DiscountRate` as percentage.
 
-General inspiration: https://github.com/sachinkumar1609/PowerBI-Project
+Create the `Calendar` calculated table from `DAX_measures.txt` using **Modeling > New table**. Mark it as a date table, and relate `Calendar[Date]` (one) to `RetailSales[OrderDate]` (many). Create each measure from the DAX file separately using **New measure**.
+
+## 3. Build report pages matching the PDF
+**Page 1 — Executive Overview:** cards for Total Sales, Total Profit, Units Sold and Profit Margin %; monthly NetSales bar chart; Category sales donut; Region sales horizontal bars; Channel sales donut; Top 5 Products sales bars.
+
+**Page 2 — Profitability Deep Dive:** Category profit donut, Category Profit Margin % bar chart, and cards for Total Orders, Distinct Customers, Average Order Value and Total Cost.
+
+Import `theme.json` from View > Themes > Browse for themes. Add date/region/category slicers if useful. The supplied PDF is a **static conceptual dashboard**, not an interactive PBIX export.
+
+## 4. Verify totals
+With all filters cleared, verify:
+- Total Sales = **15,099,553.95**
+- Total Profit = **3,819,871.35**
+- Units Sold = **4,790**
+- Total Orders = **1,200**
+- Distinct Customers = **360**
+- Profit Margin % = approximately **25.30%**
+
+## 5. Save and export
+Save the new report as `Sumit_Gole_Retail_Intelligence.pbix`, **not** `Sumit_Gole_Retail_Store_Analysis.pbix` (the latter is a separate legacy/reference report). Open the saved file again, refresh data, test slicers and verify totals. Then use File > Export > Export to PDF. Replace the static PDF only after confirming the new export reflects the same visuals and data.
+
+## Current limitation
+The new matching PBIX has **not** been built or validated in Power BI Desktop. The existing PBIX cannot be considered an implementation of this guide. Do not present it as such.
