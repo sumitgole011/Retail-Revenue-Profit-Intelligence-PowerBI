@@ -1,4 +1,5 @@
-// Import awanish_retail_sales.csv as RetailSales; OrderDate type Date
+// Sumit Gole — Retail Revenue & Profit Intelligence
+// Import sumit_retail_sales.csv as RetailSales; OrderDate type Date
 Total Sales = SUM(RetailSales[NetSales])
 Total Profit = SUM(RetailSales[Profit])
 Total Cost = SUM(RetailSales[Cost])
