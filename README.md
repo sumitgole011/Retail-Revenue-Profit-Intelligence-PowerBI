@@ -1,22 +1,39 @@
-# Retail Revenue & Profit Intelligence | Sumit Gole
+# Retail Revenue & Profit Intelligence — Sumit Gole
 
-A Power BI **starter project** featuring independently generated synthetic retail data, profitability analysis, regional trends and customer analytics.
+**Portfolio status:** Reproducible synthetic-data analytics project with a dashboard-style PDF. **The existing PBIX is a legacy/reference report and does NOT yet implement the synthetic-data dashboard shown in the PDF.**
 
-**Project owner:** Sumit Gole
+## What is in this repository?
 
-## Dashboard plan
-1. Executive Pulse — revenue, profit, orders, margin and channels
-2. Product & Margin Lab — category performance and discount analysis
-3. Regional & Customer Lens — regional sales and customer KPIs
+| File | Purpose | Status |
+|---|---|---|
+| `Sumit_Gole_Retail_Intelligence_Dashboard.pdf` | Two-page static dashboard generated from synthetic retail data | Available; not a PBIX export |
+| `Sumit_Gole_Retail_Store_Analysis.pbix` | Existing, separately sourced Retail Store Analysis report with renamed page labels | Legacy/reference; **not matched to PDF**; Power BI Desktop validation pending |
+| `generate_dataset.py` | Deterministically generates 1,200 synthetic transactions | Reproducible; Python standard library |
+| `sumit_retail_sales.csv` | Synthetic source data | Generate locally with `python generate_dataset.py`; not checked in |
+| `DAX_measures.txt` | Proposed measures for **new** `RetailSales` table | Not verified inside legacy PBIX |
+| `theme.json` | Optional midnight-teal report theme | Not verified as applied to legacy PBIX |
+| `BUILD_GUIDE.md` | Instructions to build the matching report in Power BI Desktop | Available |
 
-## Included starter files
-- `sumit_retail_sales.csv`: synthetic demo dataset (to be uploaded)
-- `DAX_measures.txt`: Power BI measures and date table
-- `theme.json`: custom Midnight Teal theme
-- `dashboard_preview.png`: conceptual preview (to be uploaded)
-- `BUILD_GUIDE.md`: Power BI Desktop instructions
+## Reproduce the PDF data
 
-**Status:** Starter project only. Native .pbix has not yet been built. Dataset and preview still need uploading.
+Run `python generate_dataset.py`. The generated CSV has 1,200 rows, 13 columns and covers 2024–2025. Expected aggregates:
 
-## Inspiration
-General inspiration from [Sachin Kumar's Power BI examples](https://github.com/sachinkumar1609/PowerBI-Project). Separate synthetic data and original analysis structure.
+| Metric | Expected value |
+|---|---:|
+| Net sales | INR 15,099,553.95 |
+| Profit | INR 3,819,871.35 |
+| Units sold | 4,790 |
+| Distinct orders | 1,200 |
+| Distinct customers | 360 |
+
+The dashboard PDF uses these synthetic figures; they do **not** establish the values inside the legacy PBIX.
+
+## Build the matching interactive dashboard
+
+Follow [BUILD_GUIDE.md](BUILD_GUIDE.md) to import the generated CSV, create the DAX measures, build the report pages and save a **new** `Sumit_Gole_Retail_Intelligence.pbix`. Only after opening, refreshing and validating that new report in Power BI Desktop should its pages be exported as a matching PDF.
+
+## Attribution and limitations
+
+Project branding and synthetic analysis: **Sumit Gole**. Original reference material and an existing PBIX were supplied separately; changing page labels does not establish original authorship of the underlying PBIX design. General inspiration: [PowerBI-Project](https://github.com/sachinkumar1609/PowerBI-Project).
+
+**Do not describe the PDF as an export of the current PBIX or claim the current PBIX has been validated.**
